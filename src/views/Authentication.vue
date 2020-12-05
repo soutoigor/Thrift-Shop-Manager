@@ -17,7 +17,9 @@
             alt="MeuBrechó Logo"
             class="header__logo"
           />
-          <h1 class="header__title">MeuBrechó.com</h1>
+          <h1 class="header__title">
+            MeuBrechó.com
+          </h1>
         </v-card-title>
         <v-card-text>
           <v-row class="card-form__container">
@@ -26,12 +28,21 @@
               md="9"
               lg="6"
             >
-              <authentication-form />
+              <authentication-form
+                :type="formType"
+                @error="showError"
+              />
             </v-col>
           </v-row>
         </v-card-text>
       </v-card>
     </v-col>
+    <snackbar-alert
+      status="error"
+      :show="isShowing"
+      :message="errorMessage"
+      @closeError="closeError"
+    />
   </v-row>
 </template>
 
@@ -41,6 +52,29 @@ import AuthenticationForm from '@/components/AuthenticationForm'
 export default {
   components: {
     AuthenticationForm,
+    SnackbarAlert: () => import('@/components/SnackbarAlert'),
+  },
+  data: () => ({
+    errorMessage: '',
+    isShowing: false,
+  }),
+  computed: {
+    formType() {
+      const types = {
+        '/login': 'login',
+        '/create-account': 'create',
+      }
+      return types[this.$route.path]
+    },
+  },
+  methods: {
+    showError(error) {
+      this.errorMessage = error
+      this.isShowing = true
+    },
+    closeError() {
+      this.isShowing = false
+    },
   },
 }
 </script>

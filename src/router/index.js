@@ -13,7 +13,12 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Authentication',
+    name: 'Login',
+    component: Authentication,
+  },
+  {
+    path: '/create-account',
+    name: 'CreateAccount',
     component: Authentication,
   },
 ]
