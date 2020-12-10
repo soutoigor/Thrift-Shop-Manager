@@ -2,7 +2,12 @@
   <v-app id="app">
     <app-header v-if="!isActualRouteExternal" />
     <v-main>
-      <router-view/>
+      <v-row
+        no-gutters
+        :class="{ app__main: !isActualRouteExternal }"
+      >
+        <router-view/>
+      </v-row>
     </v-main>
   </v-app>
 </template>
@@ -55,3 +60,8 @@ export default {
   },
 }
 </script>
+
+<style lang="sass" scoped>
+.app__main
+  padding: 2rem
+</style>

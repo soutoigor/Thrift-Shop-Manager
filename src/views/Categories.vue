@@ -1,0 +1,117 @@
+<template>
+  <v-row
+    class="category"
+    no-gutters
+  >
+    <v-col
+      cols="12"
+      sm="8"
+    >
+      <h1 class="category__title">Categorias</h1>
+    </v-col>
+    <v-col
+      cols="12"
+      sm="4"
+    >
+      <v-btn
+        color="primary"
+        large
+        block
+        @click="openDialog"
+      >
+        Criar categoria
+      </v-btn>
+    </v-col>
+    <v-col
+      cols="12"
+      class="category__list"
+    >
+      <v-progress-circular
+        v-if="firstLoad"
+        indeterminate
+        color="primary"
+        size="40"
+      />
+      <list-categories
+        v-else
+        :categories="categories"
+      />
+    </v-col>
+    <popup-modal
+      :open="isDialogOpen"
+      @close="closeDialog"
+      width="30vw"
+    >
+      <template #title>
+        Criar categoria
+      </template>
+      <template #content>
+        <register-category @created="handleCategoryCreation" />
+      </template>
+    </popup-modal>
+  </v-row>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+import ListCategories from '@/components/ListCategories'
+
+export default {
+  components: {
+    PopupModal: () => import('@/components/PopupModal'),
+    RegisterCategory: () => import('@/components/RegisterCategory'),
+    ListCategories,
+  },
+  data: () => ({
+    isDialogOpen: false,
+    categoryList: [],
+    firstLoad: false,
+  }),
+  created() {
+    this.handleFirstLoad()
+  },
+  computed: {
+    ...mapGetters('category', ['categories']),
+  },
+  methods: {
+    ...mapActions('category', [
+      'listCategory',
+    ]),
+    async handleCategoryCreation() {
+      await this.listCategory()
+      this.closeDialog()
+    },
+    async handleFirstLoad() {
+      this.toggleFirstLoad()
+      await this.listCategory()
+      this.toggleFirstLoad()
+    },
+    toggleFirstLoad() {
+      this.firstLoad = !this.firstLoad
+    },
+    openDialog() {
+      this.isDialogOpen = true
+    },
+    closeDialog() {
+      this.isDialogOpen = false
+    },
+  },
+}
+</script>
+
+<style lang="sass" scoped>
+.category
+  display: flex
+  align-items: center
+
+.category__title
+  font-size: 4rem
+  font-weight: 300
+
+.category__list
+  display: flex
+  justify-content: center
+  margin-top: 3rem
+  padding: 2rem
+
+</style>

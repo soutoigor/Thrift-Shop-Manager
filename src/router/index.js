@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import Authentication from '@/views/Authentication'
+import Categories from '@/views/Categories'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/create-account',
     name: 'CreateAccount',
     component: Authentication,
+  },
+  {
+    path: '/categories',
+    name: 'Categories',
+    component: Categories,
   },
 ]
 
