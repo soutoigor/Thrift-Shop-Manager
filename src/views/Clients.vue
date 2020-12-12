@@ -1,13 +1,13 @@
 <template>
   <v-row
-    class="category"
+    class="client"
     no-gutters
   >
     <v-col
       cols="12"
       sm="8"
     >
-      <h1 class="category__title">Categorias</h1>
+      <h1 class="client__title">Clientes</h1>
     </v-col>
     <v-col
       cols="12"
@@ -19,12 +19,12 @@
         block
         @click="openDialog"
       >
-        Criar categoria
+        Cadastrar cliente
       </v-btn>
     </v-col>
     <v-col
       cols="12"
-      class="category__list"
+      class="client__list"
     >
       <v-progress-circular
         v-if="firstLoad"
@@ -32,9 +32,9 @@
         color="primary"
         size="40"
       />
-      <list-categories
+      <list-clients
         v-else
-        :categories="categories"
+        :clients="clients"
       />
     </v-col>
     <popup-modal
@@ -43,10 +43,10 @@
       width="30vw"
     >
       <template #title>
-        Criar categoria
+        Cadastrar cliente
       </template>
       <template #content>
-        <register-category @created="handleCategoryCreation" />
+        <register-client @created="handleClientCreation" />
       </template>
     </popup-modal>
   </v-row>
@@ -58,8 +58,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     PopupModal: () => import('@/components/common/PopupModal'),
-    RegisterCategory: () => import('@/components/category/RegisterCategory'),
-    ListCategories: () => import('@/components/category/ListCategories'),
+    RegisterClient: () => import('@/components/client/RegisterClient'),
+    ListClients: () => import('@/components/client/ListClients'),
   },
   data: () => ({
     isDialogOpen: false,
@@ -69,19 +69,17 @@ export default {
     this.handleFirstLoad()
   },
   computed: {
-    ...mapGetters('category', ['categories']),
+    ...mapGetters('client', ['clients']),
   },
   methods: {
-    ...mapActions('category', [
-      'listCategory',
-    ]),
-    async handleCategoryCreation() {
-      await this.listCategory()
+    ...mapActions('client', ['listClient']),
+    async handleClientCreation() {
+      await this.listClient()
       this.closeDialog()
     },
     async handleFirstLoad() {
       this.toggleFirstLoad()
-      await this.listCategory()
+      await this.listClient()
       this.toggleFirstLoad()
     },
     toggleFirstLoad() {
@@ -98,15 +96,15 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.category
+.client
   display: flex
   align-items: center
 
-.category__title
+.client__title
   font-size: 4rem
   font-weight: 300
 
-.category__list
+.client__list
   display: flex
   justify-content: center
   margin-top: 3rem

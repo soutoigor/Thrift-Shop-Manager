@@ -3,28 +3,28 @@ import {
   store,
   update,
   destroy,
-} from '@/api/category'
+} from '@/api/client'
 
 export default {
   namespaced: true,
   state: {
     loading: false,
-    categories: [],
+    clients: [],
     filter: null,
   },
   mutations: {
     SET_LOADING(state, payload) {
       state.loading = payload
     },
-    SET_CATEGORIES(state, payload) {
-      state.categories = [...payload]
+    SET_CLIENTS(state, payload) {
+      state.clients = [...payload]
     },
     SET_FILTER(state, payload) {
       state.filter = payload
     },
   },
   actions: {
-    createCategory({ commit }, attributes) {
+    createClient({ commit }, attributes) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         store(attributes)
@@ -35,13 +35,13 @@ export default {
           })
       })
     },
-    listCategory({ commit }, filters = {}) {
+    listClient({ commit }, filters = {}) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         index(filters)
-          .then(({ data: { categories } }) => {
-            commit('SET_CATEGORIES', categories)
-            resolve(categories)
+          .then(({ data: { clients } }) => {
+            commit('SET_CLIENTS', clients)
+            resolve(clients)
           })
           .catch(reject)
           .finally(() => {
@@ -49,7 +49,7 @@ export default {
           })
       })
     },
-    updateCategory({ commit }, { id, attributes }) {
+    updateClient({ commit }, { id, attributes }) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         update(id, attributes)
@@ -60,7 +60,7 @@ export default {
           })
       })
     },
-    deleteCategory({ commit }, id) {
+    deleteClient({ commit }, id) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         destroy(id)
@@ -77,10 +77,10 @@ export default {
   },
   getters: {
     isLoading: (state) => state.loading,
-    categories: (state) => (state.filter
-      ? state.categories.filter(
-        (category) => category.name.toLowerCase().includes(state.filter.toLowerCase()),
+    clients: (state) => (state.filter
+      ? state.clients.filter(
+        (client) => client.name.toLowerCase().includes(state.filter.toLowerCase()),
       )
-      : state.categories),
+      : state.clients),
   },
 }

@@ -34,7 +34,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import ItemCategory from '@/components/ItemCategory'
+import ItemCategory from '@/components/category/ItemCategory'
 
 export default {
   components: {

@@ -3,7 +3,7 @@ import {
   login,
   store,
   show,
-} from '@/lib/authentication'
+} from '@/api/authentication'
 
 export default {
   namespaced: true,
