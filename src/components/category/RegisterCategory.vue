@@ -1,26 +1,28 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="12">
-      <v-text-field
-        v-model="name"
-        label="Nome da categoria"
-        outlined
-        clearable
-      />
-    </v-col>
-    <v-col cols="12">
-      <v-btn
-        color="primary"
-        block
-        large
-        :loading="isLoading"
-        :disabled="hasNotName"
-        @click="handleSubmit"
-      >
-        {{ buttonTitle }}
-      </v-btn>
-    </v-col>
-  </v-row>
+  <v-form @submit.prevent="handleSubmit">
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-text-field
+          v-model="name"
+          label="Nome da categoria"
+          outlined
+          clearable
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-btn
+          type="submit"
+          color="primary"
+          block
+          large
+          :loading="isLoading"
+          :disabled="hasNotName"
+        >
+          {{ buttonTitle }}
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script>

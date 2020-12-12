@@ -22,7 +22,7 @@ const externalRoutes = [
 
 export default {
   components: {
-    AppHeader: () => import('@/components/AppHeader'),
+    AppHeader: () => import('@/components/header/AppHeader'),
   },
   computed: {
     ...mapGetters('auth', ['isAuthenticated']),

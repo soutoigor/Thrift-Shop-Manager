@@ -92,8 +92,8 @@ export default {
     isEditing: false,
   }),
   components: {
-    PopupModal: () => import('@/components/PopupModal'),
-    RegisterCategory: () => import('@/components/RegisterCategory'),
+    PopupModal: () => import('@/components/common/PopupModal'),
+    RegisterCategory: () => import('@/components/category/RegisterCategory'),
   },
   computed: {
     ...mapGetters('category', ['isLoading']),
@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     ...mapActions('category', [
-      'updateCategory',
       'listCategory',
       'deleteCategory',
     ]),
