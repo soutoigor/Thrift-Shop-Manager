@@ -14,6 +14,7 @@
           label="Nome"
           outlined
           :error="$v.name.$error"
+          clearable
           :error-messages="nameErrors"
           @blur="$v.name.$touch()"
         />
@@ -24,6 +25,7 @@
           label="E-mail"
           type="email"
           outlined
+          clearable
           :error="$v.email.$error"
           :error-messages="emailErrors"
           @blur="$v.email.$touch()"
@@ -35,6 +37,7 @@
           label="Senha"
           :append-icon="passwordOptions.icon"
           :type="passwordOptions.type"
+          clearable
           outlined
           :error="$v.password.$error"
           :error-messages="passwordErrors"

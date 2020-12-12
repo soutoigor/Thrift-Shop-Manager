@@ -5,14 +5,19 @@
       color="white"
       app
     >
-      <v-toolbar-title class="toolbar">
-        <img
-          src="@/assets/logo.png"
-          alt="logo"
-          class="toolbar__image"
-        />
-        <span class="toolbar__title">MeuBrechó.com</span>
-      </v-toolbar-title>
+      <router-link
+        class="logo-link"
+        to="/"
+      >
+        <v-toolbar-title class="toolbar">
+            <img
+              src="@/assets/logo.png"
+              alt="logo"
+              class="toolbar__image"
+            />
+            <span class="toolbar__title">MeuBrechó.com</span>
+        </v-toolbar-title>
+        </router-link>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -128,6 +133,10 @@ export default {
   align-items: center
   gap: 2rem
   padding-left: 1rem
+
+.logo-link
+  text-decoration: none
+  color: currentColor
 
 .toolbar__image
   width: 60px
