@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import Authentication from '@/views/Authentication'
 import Categories from '@/views/Categories'
 import Clients from '@/views/Clients'
+import Providers from '@/views/Providers'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
     path: '/clients',
     name: 'Clients',
     component: Clients,
+  },
+  {
+    path: '/providers',
+    name: 'Providers',
+    component: Providers,
   },
 ]
 
