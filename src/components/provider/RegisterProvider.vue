@@ -11,10 +11,19 @@
       </v-col>
       <v-col cols="12">
         <v-text-field
+          v-model="telephone"
+          label="Telefone"
+          v-mask="['(##) ####-####', '(##) #####-####']"
+          outlined
+          clearable
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
           v-model="contact"
           label="Contato"
           outlined
-          hint="E-mail, telefone, etc"
+          hint="E-mail, Instagram, etc"
           clearable
         />
       </v-col>
@@ -43,11 +52,13 @@
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  directives: { mask },
   props: {
-    client: {
+    provider: {
       type: Object,
       required: false,
       default: () => ({}),
@@ -56,34 +67,42 @@ export default {
   data: () => ({
     name: null,
     contact: null,
+    telephone: null,
     address: null,
   }),
   mounted() {
-    if (this.hasClient) {
+    if (this.hasProvider) {
       this.prepareToEdit()
     }
   },
   computed: {
-    ...mapGetters('client', ['isLoading']),
+    ...mapGetters('provider', ['isLoading']),
     hasFilledFields() {
-      return !!this.name && !!this.contact && !!this.address
+      return !!this.name
+      && !!this.contact
+      && !!this.address
+      && !!this.telephone
     },
-    hasClient() {
-      return !!this.client.id
+    hasProvider() {
+      return !!this.provider.id
     },
     buttonTitle() {
-      return this.hasClient ? 'Editar' : 'Criar'
+      return this.hasProvider ? 'Editar' : 'Criar'
     },
   },
   methods: {
-    ...mapActions('client', [
-      'createClient',
-      'updateClient',
+    ...mapActions('provider', [
+      'createProvider',
+      'updateProvider',
     ]),
     prepareToEdit() {
-      this.setName(this.client.name)
-      this.setContact(this.client.contact)
-      this.setAddress(this.client.address)
+      this.setName(this.provider.name)
+      this.setContact(this.provider.contact)
+      this.setAddress(this.provider.address)
+      this.setTelephone(this.provider.telephone)
+    },
+    setTelephone(telephone) {
+      this.telephone = telephone
     },
     setName(name) {
       this.name = name
@@ -98,23 +117,28 @@ export default {
       this.setName(null)
       this.setContact(null)
       this.setAddress(null)
+      this.setTelephone(null)
+    },
+    onlyNumber(value) {
+      return value.replace(/\D/g, '')
     },
     async handleSubmit() {
-      const client = {
+      const provider = {
         name: this.name,
         contact: this.contact,
+        telephone: this.onlyNumber(this.telephone),
         address: this.address,
       }
-      if (this.hasClient) {
-        await this.updateClient({
-          id: this.client.id,
-          attributes: client,
+      if (this.hasProvider) {
+        await this.updateProvider({
+          id: this.provider.id,
+          attributes: provider,
         })
       } else {
-        await this.createClient(client)
+        await this.createProvider(provider)
       }
       this.$emit('created')
-      this.clearField()
+      this.clearFields()
     },
   },
 }
