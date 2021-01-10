@@ -105,9 +105,6 @@ export default {
   font-weight: 300
 
 .client__list
-  display: flex
-  justify-content: center
   margin-top: 3rem
-  padding: 2rem
 
 </style>

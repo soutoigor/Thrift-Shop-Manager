@@ -52,11 +52,9 @@
 </template>
 
 <script>
-import { mask } from 'vue-the-mask'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  directives: { mask },
   props: {
     provider: {
       type: Object,
