@@ -4,6 +4,8 @@ import auth from '@/store/modules/authentication'
 import category from '@/store/modules/category'
 import client from '@/store/modules/client'
 import provider from '@/store/modules/provider'
+import product from '@/store/modules/product'
+import upload from '@/store/modules/upload'
 
 Vue.use(Vuex)
 
@@ -14,5 +16,7 @@ export default new Vuex.Store({
     category,
     client,
     provider,
+    product,
+    upload,
   },
 })

@@ -11,6 +11,8 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "date-fns": "^2.16.1",
+    "v-currency-field": "^3.1.1",
     "vue": "^2.6.11",
     "vue-fragment": "^1.5.1",
     "vue-router": "^3.2.0",

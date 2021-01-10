@@ -22,7 +22,7 @@
     <v-navigation-drawer
       v-model="drawer"
       class="secondary"
-      :mini-variant.sync="drawer"
+      :mini-variant="drawer"
       permanent
       dark
       drawer

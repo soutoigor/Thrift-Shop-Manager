@@ -1,14 +1,11 @@
 <template>
   <fragment>
     <v-card v-if="$vuetify.breakpoint.xs">
+      <v-card-title>
+        {{ client.name | trimStringBy(25) }}
+      </v-card-title>
       <v-card-text>
         <v-row>
-          <v-col
-            cols="12"
-            class="client__title"
-          >
-            {{ client.name }}
-          </v-col>
           <v-col
             class="client__info"
             cols="12"
@@ -193,10 +190,6 @@ export default {
 .client
   display: flex
   flex-direction: column
-
-.client__title
-  font-size: 1.3rem
-  font-weight: 400
 
 .client__info
   display: flex

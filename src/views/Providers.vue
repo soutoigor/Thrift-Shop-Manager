@@ -109,9 +109,6 @@ export default {
     font-size: 3rem
 
 .provider__list
-  display: flex
-  justify-content: center
   margin-top: 3rem
-  padding: 2rem
 
 </style>
