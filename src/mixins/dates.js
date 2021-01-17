@@ -18,5 +18,10 @@ export default {
     dateNowISO() {
       return formatISO(new Date())
     },
+    dateRange(dates) {
+      return dates
+        .map((date) => this.formatISOToPTBR(date))
+        .join(' ~ ')
+    },
   },
 }

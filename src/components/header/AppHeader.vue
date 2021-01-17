@@ -105,7 +105,7 @@ export default {
       {
         icon: 'mdi-cart',
         title: 'Vendas',
-        url: '/sell',
+        url: '/sales',
       },
     ],
   }),

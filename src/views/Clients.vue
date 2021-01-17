@@ -46,7 +46,10 @@
         Cadastrar cliente
       </template>
       <template #content>
-        <register-client @created="handleClientCreation" />
+        <register-client
+          v-if="isDialogOpen"
+          @created="handleClientCreation"
+        />
       </template>
     </popup-modal>
   </v-row>

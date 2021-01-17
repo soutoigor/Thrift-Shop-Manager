@@ -19,6 +19,7 @@ module.exports = {
       'error',
       'never',
     ],
-    'prefer-destructuring': false,
+    'prefer-destructuring': 0,
+    'camelcase': 0,
   },
 }

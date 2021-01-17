@@ -3,29 +3,24 @@ import {
   store,
   update,
   destroy,
-} from '@/api/product'
+} from '@/api/sale'
 
 export default {
   namespaced: true,
   state: {
     loading: false,
-    products: [],
+    sales: [],
     filter: {
       page: 1,
-      sold: false,
     },
     pages: {},
-    soldProducts: [],
   },
   mutations: {
     SET_LOADING(state, payload) {
       state.loading = payload
     },
-    SET_PRODUCTS(state, payload) {
-      state.products = [...payload]
-    },
-    SET_SOLD_PRODUCTS(state, payload) {
-      state.soldProducts = [...payload]
+    SET_SALES(state, payload) {
+      state.sales = [...payload]
     },
     SET_PAGES(state, payload) {
       state.pages = { ...payload }
@@ -35,7 +30,7 @@ export default {
     },
   },
   actions: {
-    createProduct({ commit }, attributes) {
+    createSale({ commit }, attributes) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         store(attributes)
@@ -46,14 +41,14 @@ export default {
           })
       })
     },
-    listProducts({ commit, state }) {
+    listSales({ commit, state }) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         index(state.filter)
-          .then(({ data: { products } }) => {
-            commit('SET_PRODUCTS', products.items)
-            commit('SET_PAGES', products.pages)
-            resolve(products)
+          .then(({ data: { sales, pages } }) => {
+            commit('SET_SALES', sales)
+            commit('SET_PAGES', pages)
+            resolve(sales)
           })
           .catch(reject)
           .finally(() => {
@@ -61,21 +56,7 @@ export default {
           })
       })
     },
-    listSoldProducts({ commit }) {
-      commit('SET_LOADING', true)
-      return new Promise((resolve, reject) => {
-        index({ sold: true })
-          .then(({ data: { products } }) => {
-            commit('SET_SOLD_PRODUCTS', products.items)
-            resolve(products)
-          })
-          .catch(reject)
-          .finally(() => {
-            commit('SET_LOADING', false)
-          })
-      })
-    },
-    updateProduct({ commit }, { id, attributes }) {
+    updateSale({ commit }, { id, attributes }) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         update(id, attributes)
@@ -86,7 +67,7 @@ export default {
           })
       })
     },
-    deleteProduct({ commit }, id) {
+    deleteSale({ commit }, id) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         destroy(id)
@@ -101,15 +82,16 @@ export default {
       const validFilters = Object.fromEntries(
         Object
           .entries({ ...state.filter, ...filter })
-          .filter(([, value]) => !!value),
+          .filter(
+            ([, value]) => value !== null && value !== undefined && value !== '',
+          ),
       )
       commit('SET_FILTER', validFilters)
     },
   },
   getters: {
     isLoading: (state) => state.loading,
-    products: (state) => state.products,
-    soldProducts: (state) => state.soldProducts,
+    sales: (state) => state.sales,
     pages: ({ pages }) => ({
       ...pages,
       totalPages: Math.ceil(+pages.total / pages.perPage),
