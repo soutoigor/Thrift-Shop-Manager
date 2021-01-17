@@ -1,59 +1,64 @@
 <template>
   <fragment>
     <v-card v-if="$vuetify.breakpoint.smAndDown">
-      <v-card-title>
-        {{ product.name | trimStringBy(25) }}
-      </v-card-title>
       <v-card-text>
         <v-row>
           <v-col
-            v-if="product.photo"
+            v-if="sale.photo"
             cols="12"
           >
             <display-image
-              :src="product.photo"
+              :src="sale.photo"
               is-base
-              class="product__image"
+              class="sale__image"
             />
           </v-col>
           <v-col
-            cols="12"
-            class="product__info"
+            cols="6"
+            class="sale__info"
           >
-            <span class="info__label">Comprado em:</span>
-            {{ product.newItem.date | formatDate }}
+            <span class="info__label">Preço total:</span>
+            {{ sale.total_price | currencyBRL }}
           </v-col>
           <v-col
             cols="6"
-            class="product__info"
+            class="sale__info"
           >
-            <span class="info__label">Preço de compra:</span>
-            {{ product.newItem.buy_price | currencyBRL }}
+            <span class="info__label">Vendido em:</span>
+            {{ sale.date | formatDate }}
           </v-col>
           <v-col
             cols="6"
-            class="product__info"
+            class="sale__info"
           >
-            <span class="info__label">Preço para venda:</span>
-            {{ product.price | currencyBRL }}
+            <span class="info__label">Frete:</span>
+            {{ sale.shipping_price | currencyBRL }}
           </v-col>
           <v-col
             cols="6"
-            class="product__info"
+            class="sale__info"
           >
-            <span class="info__label">Categoria:</span>
-            {{ product.category.name }}
+            <span class="info__label">Cliente:</span>
+            {{ sale.client.name | trimStringBy(18) }}
           </v-col>
           <v-col
             cols="6"
-            class="product__info"
+            class="sale__info"
           >
-            <span class="info__label">Fornecedor:</span>
-            {{ product.newItem.provider.name | trimStringBy(17) }}
+            <span class="info__label">Contato:</span>
+            {{ sale.client.contact }}
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
+        <v-btn
+          text
+          color="primary"
+          :disabled="isExpanded"
+          @click="openExpandProducts"
+        >
+          ver produtos
+        </v-btn>
         <v-spacer />
         <v-btn
           icon
@@ -76,21 +81,38 @@
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-card-actions>
+
+      <v-expand-transition>
+        <v-card
+          v-if="isExpanded"
+          class="transition-fast-in-fast-out v-card--reveal"
+        >
+          <v-card-title>Produtos vendidos</v-card-title>
+          <v-card-text>
+            <sold-product
+              v-for="{ id, item } of sale.itemSell"
+              :key="id"
+              :product="item"
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              text
+              color="primary"
+              @click="closeExpandProducts"
+            >
+              fechar produtos
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-expand-transition>
     </v-card>
     <fragment v-else>
-      <td>
-        <display-image
-          :src="product.photo"
-          is-base
-          class="product__image"
-        />
-      </td>
-      <td>{{ product.name }}</td>
-      <td>{{ product.newItem.date | formatDate }}</td>
-      <td>{{ product.newItem.buy_price | currencyBRL }}</td>
-      <td>{{ product.price | currencyBRL }}</td>
-      <td>{{ product.category.name }}</td>
-      <td>{{ product.newItem.provider.name }}</td>
+      <td>{{ sale.date | formatDate }}</td>
+      <td>{{ sale.shipping_price | currencyBRL }}</td>
+      <td>{{ sale.client.name | trimStringBy(20) }}</td>
+      <td>{{ sale.client.contact }}</td>
+      <td>{{ sale.total_price | currencyBRL }}</td>
       <td>
         <v-btn
           icon
@@ -114,20 +136,22 @@
         </v-btn>
       </td>
     </fragment>
-    <full-screen-modal
+    <popup-modal
       :open="isEditDialogOpen"
       @close="closeEditDialog"
+      width="50vw"
     >
       <template #title>
-        Editar produto
+        Editar venda
       </template>
       <template #content>
-        <register-product
-          :product="product"
-          @created="handleEditProduct"
+        <register-sale
+          v-if="isEditDialogOpen"
+          :sale="sale"
+          @created="handleEditSale"
         />
       </template>
-    </full-screen-modal>
+    </popup-modal>
     <popup-modal
       :open="isDeleteDialogOpen"
       width="30vw"
@@ -175,15 +199,16 @@ import { Fragment } from 'vue-fragment'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  name: 'ItemSale',
   components: {
     Fragment,
-    FullScreenModal: () => import('@/components/common/FullScreenModal'),
     PopupModal: () => import('@/components/common/PopupModal'),
-    RegisterProduct: () => import('@/components/product/RegisterProduct'),
+    RegisterSale: () => import('@/components/sale/RegisterSale'),
     DisplayImage: () => import('@/components/common/DisplayImage'),
+    SoldProduct: () => import('@/components/sale/SoldProduct'),
   },
   props: {
-    product: {
+    sale: {
       type: Object,
       required: true,
     },
@@ -191,22 +216,23 @@ export default {
   data: () => ({
     isEditDialogOpen: false,
     isDeleteDialogOpen: false,
+    isExpanded: false,
   }),
   computed: {
-    ...mapGetters('product', ['isLoading']),
+    ...mapGetters('sale', ['isLoading']),
   },
   methods: {
-    ...mapActions('product', [
-      'listProducts',
-      'deleteProduct',
+    ...mapActions('sale', [
+      'listSales',
+      'deleteSale',
     ]),
     async handleDelete() {
-      await this.deleteProduct(this.product.id)
-      await this.listProducts()
+      await this.deleteSale(this.sale.id)
+      await this.listSales()
       this.closeDeleteDialog()
     },
-    async handleEditProduct() {
-      await this.listProducts()
+    async handleEditSale() {
+      await this.listSales()
       this.closeEditDialog()
     },
     openDeleteDialog() {
@@ -221,6 +247,12 @@ export default {
     closeEditDialog() {
       this.isEditDialogOpen = false
     },
+    openExpandProducts() {
+      this.isExpanded = true
+    },
+    closeExpandProducts() {
+      this.isExpanded = false
+    },
   },
 }
 </script>
@@ -228,17 +260,17 @@ export default {
 <style lang="sass" scoped>
 @import '~vuetify/src/styles/styles.sass'
 
-.product__title
+.sale__title
   font-size: 1.3rem
   font-weight: 400
 
-.product__image
+.sale__image
   margin: .5rem 0
   width: 100px
   @media #{map-get($display-breakpoints, 'sm-and-down')}
     width: 175px
 
-.product__info
+.sale__info
   display: flex
   flex-direction: column
 

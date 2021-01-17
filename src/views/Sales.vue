@@ -1,13 +1,13 @@
 <template>
   <v-row
-    class="product"
+    class="sale"
     no-gutters
   >
     <v-col
       cols="12"
       sm="8"
     >
-      <h1 class="product__title">Produtos</h1>
+      <h1 class="sale__title">Vendas</h1>
     </v-col>
     <v-col
       cols="12"
@@ -19,12 +19,12 @@
         block
         @click="openDialog"
       >
-        Cadastrar produto
+        Cadastrar venda
       </v-btn>
     </v-col>
     <v-col
       cols="12"
-      class="product__list"
+      class="sale__list"
     >
       <v-progress-circular
         v-if="firstLoad"
@@ -37,40 +37,40 @@
           <v-expansion-panels v-if="$vuetify.breakpoint.smAndDown">
             <v-expansion-panel>
               <v-expansion-panel-header disable-icon-rotate>
-                Filtrar produtos
+                Filtrar vendas
                 <template #actions>
                   <v-icon>mdi-filter</v-icon>
                 </template>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <filter-product />
+                <filter-sale />
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-          <filter-product v-else />
+          <filter-sale v-else />
         </v-col>
         <v-col cols="12">
-          <list-product
-            :products="products"
+          <list-sale
+            :sales="sales"
           />
         </v-col>
       </v-row>
     </v-col>
-    <full-screen-modal
+    <popup-modal
       :open="isDialogOpen"
       @close="closeDialog"
-      width="30vw"
+      width="50vw"
     >
       <template #title>
-        Criar produto
+        Cadastrar venda
       </template>
       <template #content>
-        <register-product
+        <register-sale
           v-if="isDialogOpen"
-          @created="handleProductCreation"
+          @created="handleSaleCreation"
         />
       </template>
-    </full-screen-modal>
+    </popup-modal>
   </v-row>
 </template>
 
@@ -79,10 +79,10 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
-    FullScreenModal: () => import('@/components/common/FullScreenModal'),
-    RegisterProduct: () => import('@/components/product/RegisterProduct'),
-    ListProduct: () => import('@/components/product/ListProduct'),
-    FilterProduct: () => import('@/components/product/FilterProduct'),
+    PopupModal: () => import('@/components/common/PopupModal'),
+    RegisterSale: () => import('@/components/sale/RegisterSale'),
+    ListSale: () => import('@/components/sale/ListSale'),
+    FilterSale: () => import('@/components/sale/FilterSale'),
   },
   data: () => ({
     isDialogOpen: false,
@@ -90,25 +90,29 @@ export default {
   }),
   created() {
     this.handleFirstLoad()
+    this.listClient()
+    this.listProducts()
+    this.listProviders()
     this.listCategory()
-    this.listProvider()
   },
   computed: {
-    ...mapGetters('product', ['products']),
+    ...mapGetters('sale', ['sales']),
   },
   methods: {
     ...mapActions({
+      listSales: 'sale/listSales',
+      listClient: 'client/listClient',
       listProducts: 'product/listProducts',
+      listProviders: 'provider/listProvider',
       listCategory: 'category/listCategory',
-      listProvider: 'provider/listProvider',
     }),
-    async handleProductCreation() {
-      await this.listProducts()
+    async handleSaleCreation() {
+      await this.listSales()
       this.closeDialog()
     },
     async handleFirstLoad() {
       this.toggleFirstLoad()
-      await this.listProducts()
+      await this.listSales()
       this.toggleFirstLoad()
     },
     toggleFirstLoad() {
@@ -125,14 +129,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.product
+.sale
   display: flex
   align-items: center
 
-.product__title
+.sale__title
   font-size: 4rem
   font-weight: 300
 
-.product__list
+.sale__list
   margin-top: 3rem
 </style>

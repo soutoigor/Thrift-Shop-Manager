@@ -6,6 +6,7 @@ import Categories from '@/views/Categories'
 import Clients from '@/views/Clients'
 import Providers from '@/views/Providers'
 import Products from '@/views/Products'
+import Sales from '@/views/Sales'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/products',
     name: 'Products',
     component: Products,
+  },
+  {
+    path: '/sales',
+    name: 'Sales',
+    component: Sales,
   },
 ]
 
