@@ -82,5 +82,6 @@ export default {
         (client) => client.name.toLowerCase().includes(state.filter.toLowerCase()),
       )
       : state.clients),
+    totalClients: (state) => state.clients.length,
   },
 }
