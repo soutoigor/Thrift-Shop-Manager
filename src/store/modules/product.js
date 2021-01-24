@@ -114,5 +114,6 @@ export default {
       ...pages,
       totalPages: Math.ceil(+pages.total / pages.perPage),
     }),
+    totalProducts: (state) => state.pages.total,
   },
 }

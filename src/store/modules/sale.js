@@ -1,8 +1,10 @@
+/*eslint-disable*/
 import {
   index,
   store,
   update,
   destroy,
+  getTotal,
 } from '@/api/sale'
 
 export default {
@@ -78,6 +80,13 @@ export default {
           })
       })
     },
+    totalSale(_, dateRange = {}) {
+      return new Promise((resolve, reject) => {
+        getTotal(dateRange)
+          .then(({ data: { total } }) => resolve(total))
+          .catch(reject)
+      })
+    },
     setFilter({ commit, state }, filter) {
       const validFilters = Object.fromEntries(
         Object
@@ -96,5 +105,6 @@ export default {
       ...pages,
       totalPages: Math.ceil(+pages.total / pages.perPage),
     }),
+    totalSells: (state) => state.pages.total,
   },
 }

@@ -3,6 +3,7 @@ import {
   lightFormat,
   compareAsc,
   formatISO,
+  startOfMonth,
 } from 'date-fns'
 
 export default {
@@ -22,6 +23,9 @@ export default {
       return dates
         .map((date) => this.formatISOToPTBR(date))
         .join(' ~ ')
+    },
+    startOfMonth() {
+      return formatISO(startOfMonth(new Date()))
     },
   },
 }

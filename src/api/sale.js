@@ -5,6 +5,8 @@ export const store = (attributes) => axios
 
 export const index = (params) => axios.get('/sell', { params })
 
+export const getTotal = (params) => axios.get('/sell/total', { params })
+
 export const update = (id, attributes) => axios.patch(`/sell/${id}`, attributes)
 
 export const destroy = (id) => axios.delete(`/sell/${id}`)
@@ -14,4 +16,5 @@ export default {
   store,
   update,
   destroy,
+  getTotal,
 }
