@@ -26,16 +26,7 @@
       cols="12"
       class="client__list"
     >
-      <v-progress-circular
-        v-if="firstLoad"
-        indeterminate
-        color="primary"
-        size="40"
-      />
-      <list-clients
-        v-else
-        :clients="clients"
-      />
+      <list-clients />
     </v-col>
     <popup-modal
       :open="isDialogOpen"
@@ -56,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -66,27 +57,15 @@ export default {
   },
   data: () => ({
     isDialogOpen: false,
-    firstLoad: false,
   }),
   created() {
-    this.handleFirstLoad()
-  },
-  computed: {
-    ...mapGetters('client', ['clients']),
+    this.listClient()
   },
   methods: {
     ...mapActions('client', ['listClient']),
     async handleClientCreation() {
       await this.listClient()
       this.closeDialog()
-    },
-    async handleFirstLoad() {
-      this.toggleFirstLoad()
-      await this.listClient()
-      this.toggleFirstLoad()
-    },
-    toggleFirstLoad() {
-      this.firstLoad = !this.firstLoad
     },
     openDialog() {
       this.isDialogOpen = true

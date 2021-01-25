@@ -26,35 +26,9 @@
       cols="12"
       class="product__list"
     >
-      <v-progress-circular
-        v-if="firstLoad"
-        indeterminate
-        color="primary"
-        size="40"
-      />
-      <v-row v-else>
-        <v-col cols="12">
-          <v-expansion-panels v-if="$vuetify.breakpoint.smAndDown">
-            <v-expansion-panel>
-              <v-expansion-panel-header disable-icon-rotate>
-                Filtrar produtos
-                <template #actions>
-                  <v-icon>mdi-filter</v-icon>
-                </template>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <filter-product />
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-          <filter-product v-else />
-        </v-col>
-        <v-col cols="12">
-          <list-product
-            :products="products"
-          />
-        </v-col>
-      </v-row>
+      <v-col cols="12">
+        <list-product />
+      </v-col>
     </v-col>
     <full-screen-modal
       :open="isDialogOpen"
@@ -75,26 +49,21 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     FullScreenModal: () => import('@/components/common/FullScreenModal'),
     RegisterProduct: () => import('@/components/product/RegisterProduct'),
     ListProduct: () => import('@/components/product/ListProduct'),
-    FilterProduct: () => import('@/components/product/FilterProduct'),
   },
   data: () => ({
     isDialogOpen: false,
-    firstLoad: false,
   }),
   created() {
-    this.handleFirstLoad()
+    this.listProducts()
     this.listCategory()
     this.listProvider()
-  },
-  computed: {
-    ...mapGetters('product', ['products']),
   },
   methods: {
     ...mapActions({
@@ -105,14 +74,6 @@ export default {
     async handleProductCreation() {
       await this.listProducts()
       this.closeDialog()
-    },
-    async handleFirstLoad() {
-      this.toggleFirstLoad()
-      await this.listProducts()
-      this.toggleFirstLoad()
-    },
-    toggleFirstLoad() {
-      this.firstLoad = !this.firstLoad
     },
     openDialog() {
       this.isDialogOpen = true

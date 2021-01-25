@@ -11,7 +11,7 @@
         <v-text-field
           v-if="!isLogin"
           v-model="name"
-          label="Nome"
+          label="Nome do seu brechó"
           outlined
           :error="$v.name.$error"
           clearable

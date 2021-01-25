@@ -9,56 +9,65 @@
         @input="handleFilter"
       />
     </v-col>
-    <v-row v-if="hasProviders">
-      <v-col cols="12">
-        <v-row v-if="$vuetify.breakpoint.xs">
-          <v-col
-            v-for="provider of providers"
-            :key="provider.id"
-            cols="12"
+    <v-col
+      v-if="isLoading"
+      class="providers__loading"
+      cols="12"
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        size="40"
+      />
+    </v-col>
+    <v-col
+      v-else
+      cols="12"
+    >
+      <v-row v-if="hasProviders">
+        <v-col cols="12">
+          <v-row v-if="$vuetify.breakpoint.xs">
+            <v-col
+              v-for="provider of providers"
+              :key="provider.id"
+              cols="12"
+            >
+              <item-provider :provider="provider" />
+            </v-col>
+          </v-row>
+          <v-data-table
+            v-else
+            :search="search"
+            :headers="headers"
+            :items="providers"
+            hide-default-footer
           >
-            <item-provider :provider="provider" />
-          </v-col>
-        </v-row>
-        <v-data-table
-          v-else
-          :search="search"
-          :headers="headers"
-          :items="providers"
-          hide-default-footer
+            <template v-slot:item="{ item }">
+              <tr>
+                <item-provider :provider="item" />
+              </tr>
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col
+          class="providers__empty"
+          cols="12"
         >
-          <template v-slot:item="{ item }">
-            <tr>
-              <item-provider :provider="item" />
-            </tr>
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col
-        class="providers__empty"
-        cols="12"
-      >
-        Não há fornecedores.
-      </v-col>
-    </v-row>
+          Não há fornecedores.
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
     ItemProvider: () => import('@/components/provider/ItemProvider'),
-  },
-  props: {
-    providers: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
   },
   data: () => ({
     search: null,
@@ -90,6 +99,10 @@ export default {
     ],
   }),
   computed: {
+    ...mapGetters('provider', [
+      'isLoading',
+      'providers',
+    ]),
     hasProviders() {
       return this.providers.length > 0
     },
@@ -106,6 +119,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.providers__loading
+  display: flex
+  justify-content: center
+
 .providers__empty
   font-size: 3rem
   text-align: center

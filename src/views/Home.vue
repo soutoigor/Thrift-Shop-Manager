@@ -2,7 +2,7 @@
   <v-row class="home">
     <v-col cols="12">
       <h1 class="home__title">
-        Bem-vinda(o), <span class="home__user-name">{{ userName | firstTwoNames }}</span>
+        Bem-vinda(o), <span class="home__user-name">{{ userName | trimStringBy(25) }}</span>
       </h1>
     </v-col>
     <v-col cols="12">
