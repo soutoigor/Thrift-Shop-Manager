@@ -26,35 +26,7 @@
       cols="12"
       class="sale__list"
     >
-      <v-progress-circular
-        v-if="firstLoad"
-        indeterminate
-        color="primary"
-        size="40"
-      />
-      <v-row v-else>
-        <v-col cols="12">
-          <v-expansion-panels v-if="$vuetify.breakpoint.smAndDown">
-            <v-expansion-panel>
-              <v-expansion-panel-header disable-icon-rotate>
-                Filtrar vendas
-                <template #actions>
-                  <v-icon>mdi-filter</v-icon>
-                </template>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <filter-sale />
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-          <filter-sale v-else />
-        </v-col>
-        <v-col cols="12">
-          <list-sale
-            :sales="sales"
-          />
-        </v-col>
-      </v-row>
+      <list-sale />
     </v-col>
     <popup-modal
       :open="isDialogOpen"
@@ -75,28 +47,23 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     PopupModal: () => import('@/components/common/PopupModal'),
     RegisterSale: () => import('@/components/sale/RegisterSale'),
     ListSale: () => import('@/components/sale/ListSale'),
-    FilterSale: () => import('@/components/sale/FilterSale'),
   },
   data: () => ({
     isDialogOpen: false,
-    firstLoad: false,
   }),
   created() {
-    this.handleFirstLoad()
+    this.listSales()
     this.listClient()
     this.listProducts()
     this.listProviders()
     this.listCategory()
-  },
-  computed: {
-    ...mapGetters('sale', ['sales']),
   },
   methods: {
     ...mapActions({
@@ -109,14 +76,6 @@ export default {
     async handleSaleCreation() {
       await this.listSales()
       this.closeDialog()
-    },
-    async handleFirstLoad() {
-      this.toggleFirstLoad()
-      await this.listSales()
-      this.toggleFirstLoad()
-    },
-    toggleFirstLoad() {
-      this.firstLoad = !this.firstLoad
     },
     openDialog() {
       this.isDialogOpen = true

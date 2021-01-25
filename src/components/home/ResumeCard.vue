@@ -37,6 +37,10 @@ export default {
 
 .resume-card
   background-color: var(--v-accent-base)
+  min-height: 10rem
+  display: flex
+  justify-content: center
+  align-items: center
   @media #{map-get($display-breakpoints, 'xs-only')}
     width: 70vw !important
 

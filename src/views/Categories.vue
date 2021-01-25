@@ -26,16 +26,7 @@
       cols="12"
       class="category__list"
     >
-      <v-progress-circular
-        v-if="firstLoad"
-        indeterminate
-        color="primary"
-        size="40"
-      />
-      <list-categories
-        v-else
-        :categories="categories"
-      />
+      <list-categories />
     </v-col>
     <popup-modal
       :open="isDialogOpen"
@@ -53,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -63,13 +54,9 @@ export default {
   },
   data: () => ({
     isDialogOpen: false,
-    firstLoad: false,
   }),
   created() {
-    this.handleFirstLoad()
-  },
-  computed: {
-    ...mapGetters('category', ['categories']),
+    this.listCategory()
   },
   methods: {
     ...mapActions('category', [
@@ -78,14 +65,6 @@ export default {
     async handleCategoryCreation() {
       await this.listCategory()
       this.closeDialog()
-    },
-    async handleFirstLoad() {
-      this.toggleFirstLoad()
-      await this.listCategory()
-      this.toggleFirstLoad()
-    },
-    toggleFirstLoad() {
-      this.firstLoad = !this.firstLoad
     },
     openDialog() {
       this.isDialogOpen = true

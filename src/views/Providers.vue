@@ -26,16 +26,7 @@
       cols="12"
       class="provider__list"
     >
-      <v-progress-circular
-        v-if="firstLoad"
-        indeterminate
-        color="primary"
-        size="40"
-      />
-      <list-providers
-        v-else
-        :providers="providers"
-      />
+      <list-providers />
     </v-col>
     <popup-modal
       :open="isDialogOpen"
@@ -53,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -66,24 +57,13 @@ export default {
     firstLoad: false,
   }),
   created() {
-    this.handleFirstLoad()
-  },
-  computed: {
-    ...mapGetters('provider', ['providers']),
+    this.listProvider()
   },
   methods: {
     ...mapActions('provider', ['listProvider']),
     async handleProviderCreation() {
       await this.listProvider()
       this.closeDialog()
-    },
-    async handleFirstLoad() {
-      this.toggleFirstLoad()
-      await this.listProvider()
-      this.toggleFirstLoad()
-    },
-    toggleFirstLoad() {
-      this.firstLoad = !this.firstLoad
     },
     openDialog() {
       this.isDialogOpen = true

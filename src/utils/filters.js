@@ -15,20 +15,11 @@ Vue.filter('trimStringBy', (string, maxLength) => {
     : string
 })
 
-Vue.filter('firstTwoNames', (name) => {
-  if (!name) return ''
-  const [firstName, lastName] = name.split(' ')
-  return `${firstName} ${lastName}`
-})
-
-Vue.filter('currencyBRL', (money) => {
-  if (!money) return ''
-  return money.toLocaleString(
-    'pt-BR',
-    {
-      minimumFractionDigits: 2,
-      style: 'currency',
-      currency: 'BRL',
-    },
-  )
-})
+Vue.filter('currencyBRL', (money) => money.toLocaleString(
+  'pt-BR',
+  {
+    minimumFractionDigits: 2,
+    style: 'currency',
+    currency: 'BRL',
+  },
+))

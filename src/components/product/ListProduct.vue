@@ -1,64 +1,90 @@
 <template>
-  <fragment>
-    <v-row v-if="hasProducts">
-      <v-data-table
-        v-if="$vuetify.breakpoint.mdAndUp"
-        class="products"
-        :headers="headers"
-        :items="products"
-        hide-default-footer
-        :page="pages.page"
-        :items-per-page="pages.perPage"
-      >
-        <template #item="{ item }">
-          <tr>
-            <item-product :product="item" />
-          </tr>
-        </template>
-      </v-data-table>
-      <v-row v-else>
-        <v-col
-          v-for="product of products"
-          :key="product.id"
-          cols="12"
-        >
-          <item-product :product="product" />
+  <v-row>
+    <v-col cols="12">
+      <v-expansion-panels v-if="$vuetify.breakpoint.smAndDown">
+        <v-expansion-panel>
+          <v-expansion-panel-header disable-icon-rotate>
+            Filtrar produtos
+            <template #actions>
+              <v-icon>mdi-filter</v-icon>
+            </template>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <filter-product />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+      <filter-product v-else />
+    </v-col>
+    <v-col
+      v-if="isLoading"
+      class="products__loading"
+      cols="12"
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        size="40"
+      />
+    </v-col>
+    <v-col
+      v-else
+      cols="12"
+    >
+      <v-row v-if="hasProducts">
+        <v-col cols="12">
+          <v-row v-if="$vuetify.breakpoint.xs">
+            <v-col
+              v-for="product of products"
+              :key="product.id"
+              cols="12"
+            >
+              <item-product :product="product" />
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col cols="12">
+              <v-data-table
+                :headers="headers"
+                :items="products"
+                hide-default-footer
+                :page="pages.page"
+                :items-per-page="pages.perPage"
+              >
+                <template #item="{ item }">
+                  <tr>
+                    <item-product :product="item" />
+                  </tr>
+                </template>
+              </v-data-table>
+              <v-pagination
+                :value="pages.page"
+                :length="pages.totalPages"
+                @input="changePage"
+              />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
-      <v-pagination
-        class="pagination"
-        :value="pages.page"
-        :length="pages.totalPages"
-        @input="changePage"
-      />
-    </v-row>
-    <v-row v-else>
-      <v-col
-        class="products__empty"
-        cols="12"
-      >
-        Não há produtos.
-      </v-col>
-    </v-row>
-  </fragment>
+      <v-row v-else>
+        <v-col
+          class="products__empty"
+          cols="12"
+        >
+          Não há produtos.
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { Fragment } from 'vue-fragment'
 import { mapActions, mapGetters } from 'vuex'
-import ItemProduct from '@/components/product/ItemProduct'
 
 export default {
   components: {
-    ItemProduct,
-    Fragment,
-  },
-  props: {
-    products: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
+    ItemProduct: () => import('@/components/product/ItemProduct'),
+    FilterProduct: () => import('@/components/product/FilterProduct'),
   },
   data: () => ({
     headers: [
@@ -97,7 +123,11 @@ export default {
     ],
   }),
   computed: {
-    ...mapGetters('product', ['pages']),
+    ...mapGetters('product', [
+      'pages',
+      'products',
+      'isLoading',
+    ]),
     hasProducts() {
       return this.products.length > 0
     },
@@ -118,6 +148,10 @@ export default {
 <style lang="sass" scoped>
 .products
   width: 100%
+
+.products__loading
+  display: flex
+  justify-content: center
 
 .pagination
   width: 100%
