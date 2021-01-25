@@ -9,6 +9,7 @@
     >
       <v-card
         elevation="12"
+        light
         class="authentication__card-form"
       >
         <v-card-title class="card-form__header">

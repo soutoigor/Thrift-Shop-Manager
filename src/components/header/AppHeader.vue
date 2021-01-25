@@ -2,7 +2,7 @@
   <div>
     <v-app-bar
       elevation="1"
-      color="white"
+      color="accent"
       app
     >
       <router-link
@@ -53,10 +53,13 @@
         </v-list-item>
       </v-list>
       <template #append>
+        <v-list-item>
+          <v-list-item-content class="toolbar__theme">
+            <theme-controller />
+          </v-list-item-content>
+        </v-list-item>
         <v-divider />
-        <v-list-item
-          @click="handleLogout"
-        >
+        <v-list-item @click="handleLogout">
           <v-list-item-icon>
             <v-icon>mdi-logout-variant</v-icon>
           </v-list-item-icon>
@@ -72,8 +75,12 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ThemeController from '@/components/header/ThemeController'
 
 export default {
+  components: {
+    ThemeController,
+  },
   data: () => ({
     drawer: false,
     pages: [
@@ -140,6 +147,10 @@ export default {
 
 .toolbar__image
   width: 60px
+
+.toolbar__theme
+  padding: 0
+  padding-bottom: 1rem
 
 .toolbar__title
   font-size: 1.7rem

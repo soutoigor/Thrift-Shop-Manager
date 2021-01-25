@@ -9,4 +9,9 @@ $btn-font-sizes: (
   'x-large': 1.2rem,
 );
 
+::selection {
+  background-color: var(--v-secondary-base);
+  color: #fff;
+}
+
 $snackbar-content-font-size: 1.2rem;
