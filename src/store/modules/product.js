@@ -12,7 +12,6 @@ export default {
     products: [],
     filter: {
       page: 1,
-      sold: false,
     },
     pages: {},
     soldProducts: [],
@@ -49,7 +48,7 @@ export default {
     listProducts({ commit, state }) {
       commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
-        index(state.filter)
+        index({ ...state.filter, sold: false })
           .then(({ data: { products } }) => {
             commit('SET_PRODUCTS', products.items)
             commit('SET_PAGES', products.pages)

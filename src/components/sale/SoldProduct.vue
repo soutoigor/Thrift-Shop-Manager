@@ -91,10 +91,10 @@ export default {
 @import '~vuetify/src/styles/styles.sass'
 
 .sold-product
-  background-color: rgb(245, 245, 245)
+  background-color: var(--v-accent-base)
   width: 100%
   &:not(:first-child)
-    border-top: 1px solid #fff
+    border-top: 1px solid var(--v-accent-lighten4)
 
 .sold-product__content
   display: flex
