@@ -79,6 +79,7 @@ export default {
     ...mapActions('client', [
       'createClient',
       'updateClient',
+      'listClient',
     ]),
     prepareToEdit() {
       this.setName(this.client.name)
@@ -113,8 +114,9 @@ export default {
       } else {
         await this.createClient(client)
       }
-      this.$emit('created')
-      this.clearField()
+      this.listClient()
+      this.$emit('saved')
+      this.clearFields()
     },
   },
 }

@@ -37,7 +37,7 @@
         <register-category
           v-if="isEditing"
           :category="category"
-          @created="handleEditCategory"
+          @saved="handleEditCategory"
         />
       </template>
       <template #actions>
@@ -111,8 +111,7 @@ export default {
       await this.listCategory()
       this.closeDialog()
     },
-    async handleEditCategory() {
-      await this.listCategory()
+    handleEditCategory() {
       this.closeDialog()
     },
     openEditCategory() {

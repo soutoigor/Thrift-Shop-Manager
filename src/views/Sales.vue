@@ -39,7 +39,7 @@
       <template #content>
         <register-sale
           v-if="isDialogOpen"
-          @created="handleSaleCreation"
+          @saved="handleSaleCreation"
         />
       </template>
     </popup-modal>
@@ -73,8 +73,7 @@ export default {
       listProviders: 'provider/listProvider',
       listCategory: 'category/listCategory',
     }),
-    async handleSaleCreation() {
-      await this.listSales()
+    handleSaleCreation() {
       this.closeDialog()
     },
     openDialog() {

@@ -85,7 +85,7 @@
         <register-client
           v-if="isEditing"
           :client="client"
-          @created="handleEditClient"
+          @saved="handleEditClient"
         />
       </template>
       <template #actions>
@@ -161,8 +161,7 @@ export default {
       await this.listClient()
       this.closeDialog()
     },
-    async handleEditClient() {
-      await this.listClient()
+    handleEditClient() {
       this.closeDialog()
     },
     openEditClient() {

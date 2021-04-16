@@ -60,6 +60,7 @@ export default {
     ...mapActions('category', [
       'createCategory',
       'updateCategory',
+      'listCategory',
     ]),
     prepareToEdit() {
       this.setName(this.category.name)
@@ -77,7 +78,8 @@ export default {
       } else {
         await this.createCategory(category)
       }
-      this.$emit('created')
+      this.listCategory()
+      this.$emit('saved')
       this.setName(null)
     },
   },

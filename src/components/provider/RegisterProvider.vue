@@ -92,6 +92,7 @@ export default {
     ...mapActions('provider', [
       'createProvider',
       'updateProvider',
+      'listProvider',
     ]),
     prepareToEdit() {
       this.setName(this.provider.name)
@@ -135,7 +136,8 @@ export default {
       } else {
         await this.createProvider(provider)
       }
-      this.$emit('created')
+      this.listProvider()
+      this.$emit('saved')
       this.clearFields()
     },
   },
