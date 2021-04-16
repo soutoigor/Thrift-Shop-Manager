@@ -41,7 +41,7 @@
       <template #content>
         <register-product
           v-if="isDialogOpen"
-          @created="handleProductCreation"
+          @saved="handleProductCreation"
         />
       </template>
     </full-screen-modal>
@@ -71,8 +71,7 @@ export default {
       listCategory: 'category/listCategory',
       listProvider: 'provider/listProvider',
     }),
-    async handleProductCreation() {
-      await this.listProducts()
+    handleProductCreation() {
       this.closeDialog()
     },
     openDialog() {

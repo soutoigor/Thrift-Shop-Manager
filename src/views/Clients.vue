@@ -39,7 +39,7 @@
       <template #content>
         <register-client
           v-if="isDialogOpen"
-          @created="handleClientCreation"
+          @saved="handleClientCreation"
         />
       </template>
     </popup-modal>
@@ -63,8 +63,7 @@ export default {
   },
   methods: {
     ...mapActions('client', ['listClient']),
-    async handleClientCreation() {
-      await this.listClient()
+    handleClientCreation() {
       this.closeDialog()
     },
     openDialog() {

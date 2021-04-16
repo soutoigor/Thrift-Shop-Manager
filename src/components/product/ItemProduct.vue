@@ -124,7 +124,7 @@
       <template #content>
         <register-product
           :product="product"
-          @created="handleEditProduct"
+          @saved="handleEditProduct"
         />
       </template>
     </full-screen-modal>
@@ -205,8 +205,7 @@ export default {
       await this.listProducts()
       this.closeDeleteDialog()
     },
-    async handleEditProduct() {
-      await this.listProducts()
+    handleEditProduct() {
       this.closeEditDialog()
     },
     openDeleteDialog() {

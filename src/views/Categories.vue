@@ -37,7 +37,7 @@
         Criar categoria
       </template>
       <template #content>
-        <register-category @created="handleCategoryCreation" />
+        <register-category @saved="handleCategoryCreation" />
       </template>
     </popup-modal>
   </v-row>
@@ -62,8 +62,7 @@ export default {
     ...mapActions('category', [
       'listCategory',
     ]),
-    async handleCategoryCreation() {
-      await this.listCategory()
+    handleCategoryCreation() {
       this.closeDialog()
     },
     openDialog() {

@@ -161,6 +161,7 @@ export default {
     ...mapActions({
       updateSale: 'sale/updateSale',
       createSale: 'sale/createSale',
+      listSales: 'sale/listSales',
       listProducts: 'product/listProducts',
       listSoldProducts: 'product/listSoldProducts',
     }),
@@ -192,7 +193,8 @@ export default {
         this.listProducts()
         this.listSoldProducts()
       }
-      this.$emit('created')
+      this.listSales()
+      this.$emit('saved')
     },
   },
 }

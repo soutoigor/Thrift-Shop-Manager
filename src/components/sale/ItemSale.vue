@@ -148,7 +148,7 @@
         <register-sale
           v-if="isEditDialogOpen"
           :sale="sale"
-          @created="handleEditSale"
+          @saved="handleEditSale"
         />
       </template>
     </popup-modal>
@@ -231,8 +231,7 @@ export default {
       await this.listSales()
       this.closeDeleteDialog()
     },
-    async handleEditSale() {
-      await this.listSales()
+    handleEditSale() {
       this.closeEditDialog()
     },
     openDeleteDialog() {

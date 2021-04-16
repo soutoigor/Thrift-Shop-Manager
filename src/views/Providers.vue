@@ -37,7 +37,7 @@
         Cadastrar fornecedor
       </template>
       <template #content>
-        <register-provider @created="handleProviderCreation" />
+        <register-provider @saved="handleProviderCreation" />
       </template>
     </popup-modal>
   </v-row>
@@ -61,8 +61,7 @@ export default {
   },
   methods: {
     ...mapActions('provider', ['listProvider']),
-    async handleProviderCreation() {
-      await this.listProvider()
+    handleProviderCreation() {
       this.closeDialog()
     },
     openDialog() {

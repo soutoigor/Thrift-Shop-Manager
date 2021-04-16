@@ -216,6 +216,7 @@ export default {
     ...mapActions({
       updateProduct: 'product/updateProduct',
       createProduct: 'product/createProduct',
+      listProducts: 'product/listProducts',
     }),
     fillDefaultForm() {
       this.form = {
@@ -255,7 +256,8 @@ export default {
       } else {
         await this.createProduct(this.form)
       }
-      this.$emit('created')
+      this.listProducts()
+      this.$emit('saved')
     },
   },
 }
