@@ -20,6 +20,6 @@ module.exports = {
       'never',
     ],
     'prefer-destructuring': 0,
-    'camelcase': 0,
+    camelcase: 0,
   },
 }
