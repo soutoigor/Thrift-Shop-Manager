@@ -99,9 +99,9 @@ import {
 
 export default {
   props: {
-    type: {
-      type: String,
-      required: true,
+    isLogin: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({
@@ -123,9 +123,6 @@ export default {
       return this.showPassword
         ? { icon: 'mdi-eye', type: 'text' }
         : { icon: 'mdi-eye-off', type: 'password' }
-    },
-    isLogin() {
-      return this.type === 'login'
     },
     formTitle() {
       return this.isLogin ? 'Login' : 'Cadastre-se'

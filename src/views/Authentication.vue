@@ -30,7 +30,7 @@
               lg="6"
             >
               <authentication-form
-                :type="formType"
+                :is-login="isLogin"
                 @error="showError"
               />
             </v-col>
@@ -55,19 +55,16 @@ export default {
     AuthenticationForm,
     SnackbarAlert: () => import('@/components/common/SnackbarAlert'),
   },
+  props: {
+    isLogin: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => ({
     errorMessage: '',
     isShowing: false,
   }),
-  computed: {
-    formType() {
-      const types = {
-        '/login': 'login',
-        '/create-account': 'create',
-      }
-      return types[this.$route.path]
-    },
-  },
   methods: {
     showError(error) {
       this.errorMessage = error

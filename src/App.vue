@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <app-header v-if="!isActualRouteExternal" />
+    <app-header v-if="isActualPageInsideApp" />
     <v-main>
       <v-row
         no-gutters
-        :class="{ app__main: !isActualRouteExternal }"
+        :class="{ app__main: isActualPageInsideApp }"
       >
         <router-view/>
       </v-row>
@@ -13,49 +13,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
-const externalRoutes = [
-  '/login',
-  '/create-account',
-]
-
 export default {
   components: {
     AppHeader: () => import('@/components/header/AppHeader'),
   },
   computed: {
-    ...mapGetters('auth', ['isAuthenticated']),
-    isActualRouteExternal() {
-      return externalRoutes.includes(this.$route.path)
-    },
-  },
-  watch: {
-    $route: {
-      immediate: true,
-      async handler(to, from) {
-        const LOGIN_PATH = '/login'
-
-        const shouldRefreshUser = from?.path !== LOGIN_PATH
-          && !this.isActualRouteExternal
-
-        if (shouldRefreshUser) {
-          await this.tryToRefreshUser()
-        }
-      },
-    },
-  },
-  methods: {
-    ...mapActions('auth', [
-      'getUser',
-      'setUser',
-      'setToken',
-    ]),
-    async tryToRefreshUser() {
-      const token = localStorage.getItem('token')
-      this.setToken(token)
-      const { data: user } = await this.getUser()
-      this.setUser(user)
+    isActualPageInsideApp() {
+      return this.$route.meta.requiresAuth
     },
   },
 }
