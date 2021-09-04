@@ -1,12 +1,6 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 import Home from '@/views/Home'
-import Authentication from '@/views/Authentication'
-import Categories from '@/views/Categories'
-import Clients from '@/views/Clients'
-import Providers from '@/views/Providers'
-import Products from '@/views/Products'
-import Sales from '@/views/Sales'
+import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
@@ -15,41 +9,50 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { requiresAuth: true },
   },
   {
     path: '/login',
     name: 'Login',
-    component: Authentication,
+    component: () => import('@/views/Authentication'),
+    props: { isLogin: true },
+    meta: { requiresAuth: false },
   },
   {
     path: '/create-account',
     name: 'CreateAccount',
-    component: Authentication,
+    component: () => import('@/views/Authentication'),
+    meta: { requiresAuth: false },
   },
   {
     path: '/categories',
     name: 'Categories',
-    component: Categories,
+    component: () => import('@/views/Categories'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/clients',
     name: 'Clients',
-    component: Clients,
+    component: () => import('@/views/Clients'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/providers',
     name: 'Providers',
-    component: Providers,
+    component: () => import('@/views/Providers'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/products',
     name: 'Products',
-    component: Products,
+    component: () => import('@/views/Products'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/sales',
     name: 'Sales',
-    component: Sales,
+    component: () => import('@/views/Sales'),
+    meta: { requiresAuth: true },
   },
 ]
 
@@ -57,6 +60,29 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+const refreshUser = async (token) => {
+  // eslint-disable-next-line global-require
+  const store = require('../store').default
+
+  store.dispatch('auth/setToken', token)
+  const { data: user } = await store.dispatch('auth/getUser')
+  store.dispatch('auth/setUser', user)
+}
+
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem('token')
+
+  if (!token && to.meta.requiresAuth) {
+    next('/login')
+  } else {
+    const shouldRefreshUser = !from.name && to.meta.requiresAuth
+
+    if (shouldRefreshUser) await refreshUser(token)
+
+    next()
+  }
 })
 
 export default router
