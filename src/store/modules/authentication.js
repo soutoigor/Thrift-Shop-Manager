@@ -73,7 +73,7 @@ export default {
   },
   getters: {
     isLoading: (state) => state.loading,
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state) => state.token,
     userName: (state) => state.user.name || '',
   },
 }
