@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Home from '@/views/Home'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -62,25 +63,29 @@ const router = new VueRouter({
   routes,
 })
 
-const refreshUser = async (token) => {
-  // eslint-disable-next-line global-require
-  const store = require('../store').default
+const setToken = () => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    store.dispatch('auth/setToken', token)
+  }
+}
 
-  store.dispatch('auth/setToken', token)
+const refreshUser = async () => {
   const { data: user } = await store.dispatch('auth/getUser')
   store.dispatch('auth/setUser', user)
 }
 
 router.beforeEach(async (to, from, next) => {
-  const token = localStorage.getItem('token')
+  const shouldRefreshUser = !from.name && to.meta.requiresAuth
 
-  if (!token && to.meta.requiresAuth) {
+  if (shouldRefreshUser) setToken()
+
+  const isAuthenticated = store.getters['auth/isAuthenticated']
+
+  if (!isAuthenticated && to.meta.requiresAuth) {
     next('/login')
   } else {
-    const shouldRefreshUser = !from.name && to.meta.requiresAuth
-
-    if (shouldRefreshUser) await refreshUser(token)
-
+    if (shouldRefreshUser) await refreshUser()
     next()
   }
 })

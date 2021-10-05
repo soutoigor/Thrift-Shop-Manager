@@ -8,11 +8,13 @@ const axiosSettings = axios.create({
 axiosSettings.interceptors.response.use(
   (response) => response,
   (error) => {
-    const urlAPIRequested = error.response.config.url.replace(error.response.config.baseURL, '')
-    const isSessionRoute = urlAPIRequested === '/user'
-    if (error.response.status === 401 && !isSessionRoute) {
+    const isLoginRoute = error.response.config.url === '/login'
+    const isUnauthorized = error.response.status === 401
+
+    if (isUnauthorized && !isLoginRoute) {
       window.location = '/login'
     }
+
     return Promise.reject(error)
   },
 )

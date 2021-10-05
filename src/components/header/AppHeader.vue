@@ -17,7 +17,7 @@
             />
             <span class="toolbar__title">MeuBrechó.com</span>
         </v-toolbar-title>
-        </router-link>
+      </router-link>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
